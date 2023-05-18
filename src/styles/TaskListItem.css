@@ -1,0 +1,42 @@
+.task-list-item {
+    background-color: #F3F3F3;
+    border: 1px solid #DDD;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  
+  .task-list-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .task-list-item-title {
+    margin: 0;
+  }
+  
+  .delete-button {
+    background-color: #FF4136;
+    color: #FFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .task-list-item-description {
+    margin: 10px 0;
+  }
+  
+  .task-list-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .task-list-item-date,
+  .task-list-item-account {
+    margin: 0;
+  }
+  

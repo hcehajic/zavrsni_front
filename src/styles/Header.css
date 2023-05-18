@@ -1,0 +1,40 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333333;
+  color: #ffffff;
+  padding: 1rem;
+}
+
+.header .logo {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav-item {
+  margin-left: 1rem;
+}
+
+.nav-link {
+  background-color: #ffffff;
+  color: #333333;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  background-color: #eeeeee;
+}
