@@ -13,7 +13,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false); 
+  const [showCalendar, setShowCalendar] = useState(false);
 
   const API_BASE_URL = 'http://localhost:8080';
 
@@ -63,6 +63,7 @@ function App() {
         console.log('Logged in as:', user);
         setIsAuthenticated(true);
         setLoginError(false);
+        setShowTasks(true); // Show tasks after successful login
       } else {
         setLoginError(true);
         console.error('Invalid data');
@@ -132,6 +133,12 @@ function App() {
     setShowTaskForm(false);
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      setShowTasks(true);
+    }
+  }, [isAuthenticated]);
+
   return (
     <div className="app-container">
       <div className="App">
@@ -144,23 +151,25 @@ function App() {
           onCalendar={handleCalendarClick} // Add calendar click handler
         />
 
-        {isAuthenticated && !showSettings && (
-          <>
-            {showTaskForm && <TaskForm onAddTask={handleTaskFormSubmit} accountId={1} />}
-            {showTasks && <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} API_BASE_URL={API_BASE_URL} />}
-            {showCalendar && <Calendar tasks={tasks} />} 
-          </>
+        {showTaskForm && (
+          <TaskForm onAddTask={handleTaskFormSubmit} accountId={1} onCancel={() => setShowTaskForm(false)} />
+        )}
+
+        {isAuthenticated && !showSettings && showTasks && (
+          <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} API_BASE_URL={API_BASE_URL} />
+        )}
+
+        {isAuthenticated && showCalendar && (
+          <Calendar tasks={tasks} />
         )}
 
         {!isAuthenticated && (
-          <LoginForm
-            onSubmit={handleLoginSubmit}
-            setIsAuthenticated={setIsAuthenticated}
-            loginError={loginError}
-          />
+          <LoginForm onLogin={handleLoginSubmit} loginError={loginError} />
         )}
 
-        {isAuthenticated && showSettings && <Settings />}
+        {isAuthenticated && showSettings && (
+          <Settings />
+        )}
       </div>
     </div>
   );

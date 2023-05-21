@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import '../styles/LoginForm.css';
 
-function LoginForm({ onSubmit, setIsAuthenticated }) {
+function LoginForm({ onLogin, setIsAuthenticated }) {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const success = await onSubmit(credentials);
+      const success = await onLogin(credentials);
       if (success) {
         setIsAuthenticated(true);
       } else {

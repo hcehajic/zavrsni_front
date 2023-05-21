@@ -27,6 +27,17 @@
   color: #555555;
 }
 
+.task-form textarea#description {
+  padding: 12px;
+  margin-bottom: 20px;
+  width: 100%; /* Updated width to 100% */
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #555555;
+}
+
 .task-form button[type="submit"] {
   padding: 12px 24px;
   background-color: #002366;
@@ -41,4 +52,24 @@
 
 .task-form button[type="submit"]:hover {
   background-color: #002366;
+}
+
+.CancelButton {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.CancelButton:hover {
+  background-color: #ff4f4f;
 }

@@ -45,7 +45,7 @@ function TaskForm(props) {
         onChange={(e) => setCreationDate(e.target.value)}
       />
       <button type="submit">Add Task</button>
-      <button type="button" onClick={handleCancel}>
+      <button type="button" onClick={handleCancel} className="CancelButton">
         Cancel
       </button>
     </form>
