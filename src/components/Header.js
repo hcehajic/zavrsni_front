@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Header.css';
 
-function Header({ isAuthenticated, onLogout, onAddTask, onSettings, onHome }) {
+function Header({ isAuthenticated, onLogout, onAddTask, onSettings, onHome, onCalendar }) {
   const handleLogoutClick = () => {
     onLogout();
   };
@@ -18,6 +18,10 @@ function Header({ isAuthenticated, onLogout, onAddTask, onSettings, onHome }) {
     onHome();
   };
 
+  const handleCalendarClick = () => {
+    onCalendar();
+  };
+
   return (
     <header className="header">
       <div className="logo">Planner</div>
@@ -31,6 +35,9 @@ function Header({ isAuthenticated, onLogout, onAddTask, onSettings, onHome }) {
           </div>
           <div className="nav-item">
             <button className="nav-link" onClick={handleHomeClick}>Home</button>
+          </div>
+          <div className="nav-item">
+            <button className="nav-link" onClick={handleCalendarClick}>Calendar</button>
           </div>
           <div className="nav-item">
             <button className="nav-link" onClick={handleLogoutClick}>Logout</button>

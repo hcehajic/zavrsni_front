@@ -4,7 +4,7 @@ import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import LoginForm from './components/LoginForm';
 import Settings from './components/Settings';
-import './App.css';
+import Calendar from './components/Calendar';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -12,10 +12,11 @@ function App() {
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [loginError, setLoginError] = useState(false);
+  const [showTasks, setShowTasks] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false); 
 
   const API_BASE_URL = 'http://localhost:8080';
 
-  // Fetch tasks from API on component mount
   useEffect(() => {
     async function fetchTasks() {
       try {
@@ -33,8 +34,7 @@ function App() {
 
   const handleDeleteTask = async (id) => {
     try {
-
-      const updatedTasks = await tasks.filter((task) => task.id !== id);
+      const updatedTasks = tasks.filter((task) => task.id !== id);
       await fetch(`${API_BASE_URL}/api/v1/task/${id}`, {
         method: 'DELETE',
         headers: {
@@ -73,21 +73,43 @@ function App() {
   };
 
   const handleLogout = () => {
-    // handle logout and reset authentication state
     console.log('Logging out...');
     setIsAuthenticated(false);
     setShowTaskForm(false);
+    setShowTasks(false);
+    setShowCalendar(false); // Reset calendar visibility on logout
   };
 
   const handleAddTaskClick = () => {
     setShowTaskForm(true);
     setShowSettings(false);
+    setShowTasks(false);
+    setShowCalendar(false); // Hide calendar when adding a new task
+  };
+
+  const handleHomeClick = () => {
+    setShowTaskForm(false);
+    setShowSettings(false);
+    setShowTasks(true);
+    setShowCalendar(false); // Hide calendar when home is clicked
+  };
+
+  const handleCalendarClick = () => {
+    setShowTaskForm(false);
+    setShowSettings(false);
+    setShowTasks(false);
+    setShowCalendar(true); // Show calendar when calendar is clicked
   };
 
   const handleTaskFormSubmit = async (taskName, description, dateOfCreation, id) => {
     try {
-      var task = '{"taskName": "'+taskName+'", "description": "'+description+'", "dateOfCreation": "'+dateOfCreation+'", "accountId": '+id+'}';
-      console.log(task);
+      const task = JSON.stringify({
+        taskName: taskName,
+        description: description,
+        dateOfCreation: dateOfCreation,
+        accountId: id,
+      });
+
       const response = await fetch(`${API_BASE_URL}/api/v1/task`, {
         method: 'POST',
         headers: {
@@ -95,12 +117,12 @@ function App() {
         },
         body: task
       });
-  
+
       if (response.ok) {
-        const data = await response.text();
-        const newTask = JSON.parse(data);
-        console.log('Task added:', newTask);
-        setTasks([...tasks, newTask]);
+        const data = await response.json();
+        console.log('Task added:', data);
+        setTasks([...tasks, data]);
+        setShowTasks(true); // Show task list after adding a new task
       } else {
         console.error('Failed to add task:', response.status);
       }
@@ -108,45 +130,38 @@ function App() {
       console.error('Error adding task:', error);
     }
     setShowTaskForm(false);
-  };   
-
-  const handleHomeClick = () => {
-    setShowTaskForm(false);
-    setShowSettings(false);
-  };
-
-  const handleSettingsClick = () => {
-    setShowSettings(true);
-    setShowTaskForm(false);
   };
 
   return (
-    <div className="App">
-      <Header
-        isAuthenticated={isAuthenticated}
-        onLogout={handleLogout}
-        onAddTask={handleAddTaskClick}
-        onHome={handleHomeClick}
-        onSettings={handleSettingsClick}
-      />
-
-      {isAuthenticated && !showSettings && (
-        <>
-          {showTaskForm && <TaskForm onAddTask={handleTaskFormSubmit} accountId={1} />}
-          <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} />
-        </>
-      )}
-
-      {!isAuthenticated && (
-        <LoginForm
-          onSubmit={handleLoginSubmit}
-          setIsAuthenticated={setIsAuthenticated}
-          loginError={loginError}
+    <div className="app-container">
+      <div className="App">
+        <Header
+          isAuthenticated={isAuthenticated}
+          onLogout={handleLogout}
+          onAddTask={handleAddTaskClick}
+          onHome={handleHomeClick}
+          onSettings={() => setShowSettings(true)}
+          onCalendar={handleCalendarClick} // Add calendar click handler
         />
-      )}
-      {isAuthenticated && showSettings && (
-        <Settings />
-      )}
+
+        {isAuthenticated && !showSettings && (
+          <>
+            {showTaskForm && <TaskForm onAddTask={handleTaskFormSubmit} accountId={1} />}
+            {showTasks && <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} API_BASE_URL={API_BASE_URL} />}
+            {showCalendar && <Calendar tasks={tasks} />} 
+          </>
+        )}
+
+        {!isAuthenticated && (
+          <LoginForm
+            onSubmit={handleLoginSubmit}
+            setIsAuthenticated={setIsAuthenticated}
+            loginError={loginError}
+          />
+        )}
+
+        {isAuthenticated && showSettings && <Settings />}
+      </div>
     </div>
   );
 }

@@ -15,7 +15,11 @@ function TaskForm(props) {
     setTaskName('');
     setDescription('');
     setCreationDate('');
-  };  
+  };
+
+  const handleCancel = () => {
+    props.onCancel();
+  };
 
   return (
     <form className="task-form" onSubmit={handleSubmit}>
@@ -27,20 +31,23 @@ function TaskForm(props) {
         onChange={(e) => setTaskName(e.target.value)}
       />
       <label htmlFor="description">Description:</label>
-      <input
-        type="text"
+      <textarea
         id="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        rows={4} // Adjust the number of rows as desired
       />
       <label htmlFor="creationDate">Due Date:</label>
       <input
         type="date"
         id="creationDate"
-        value={creationDate}
+        value={creationDate || props.defaultDueDate}
         onChange={(e) => setCreationDate(e.target.value)}
       />
       <button type="submit">Add Task</button>
+      <button type="button" onClick={handleCancel}>
+        Cancel
+      </button>
     </form>
   );
 }
