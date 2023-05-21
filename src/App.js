@@ -15,7 +15,7 @@ function App() {
   const [showTasks, setShowTasks] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
 
-  const API_BASE_URL = 'http://localhost:8080';
+  const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
 
   useEffect(() => {
     async function fetchTasks() {

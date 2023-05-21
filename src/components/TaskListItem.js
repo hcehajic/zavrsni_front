@@ -1,15 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/TaskListItem.css';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
 
 function TaskListItem(props) {
-  const { task, onDeleteTask, subTasks } = props;
+  const { task, onDeleteTask } = props;
   const [newSubTask, setNewSubTask] = useState('');
+  const [subTasks, setSubTasks] = useState([]);
 
   const handleDeleteClick = () => {
     onDeleteTask(task.id);
   };
+
+  const fetchSubTasks = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v1/task/sub/${task.id}`, { mode: 'cors' });
+      const data = await response.json();
+      console.log(data);
+      setSubTasks(data);
+    } catch (error) {
+      console.error('Failed to fetch sub tasks:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubTasks();
+  }, [task]);
+
+  console.log(subTasks);
 
   const handleAddSubTask = async (e) => {
     e.preventDefault();
@@ -21,21 +39,21 @@ function TaskListItem(props) {
         },
         body: JSON.stringify({ description: newSubTask, accountId: task.accountId, taskId: task.id }),
       });
-  
+
       if (response.ok) {
         setNewSubTask('');
-        // Update the subtasks in the parent component
-        props.onShowSubs(task.id);
+        fetchSubTasks();
       } else {
         console.error('Failed to add subtask:', response.status);
       }
     } catch (error) {
       console.error('Error adding subtask:', error);
     }
-  };  
+  };
 
   const handleDeleteSubTask = async (subTaskId) => {
     try {
+      console.log(subTaskId);
       await fetch(`${API_BASE_URL}/api/v1/task/sub/${subTaskId}`, {
         method: 'DELETE',
         headers: {
@@ -43,8 +61,7 @@ function TaskListItem(props) {
         },
       });
 
-      // Update the subtasks in the parent component
-      props.onShowSubs(task.id);
+      fetchSubTasks();
     } catch (error) {
       console.error('Error deleting subtask:', error);
     }
