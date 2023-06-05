@@ -24,23 +24,23 @@ function Header({ isAuthenticated, onLogout, onAddTask, onSettings, onHome, onCa
 
   return (
     <header className="header">
-      <div className="logo">Planner</div>
+      <div className="logo">Magic Planner</div>
       {isAuthenticated && (
         <nav className="nav">
           <div className="nav-item">
-            <button className="nav-link" onClick={handleAddTaskClick}>Add Task</button>
+            <button className="nav-link" onClick={handleAddTaskClick}>Dodaj zadatak</button>
           </div>
           <div className="nav-item">
-            <button className="nav-link" onClick={handleSettingsClick}>Settings</button>
+            <button className="nav-link" onClick={handleSettingsClick}>Postavke</button>
           </div>
           <div className="nav-item">
-            <button className="nav-link" onClick={handleHomeClick}>Home</button>
+            <button className="nav-link" onClick={handleHomeClick}>Početna</button>
           </div>
           <div className="nav-item">
-            <button className="nav-link" onClick={handleCalendarClick}>Calendar</button>
+            <button className="nav-link" onClick={handleCalendarClick}>Kalendar</button>
           </div>
           <div className="nav-item">
-            <button className="nav-link" onClick={handleLogoutClick}>Logout</button>
+            <button className="nav-link" onClick={handleLogoutClick}>Odjavi se</button>
           </div>
         </nav>
       )}

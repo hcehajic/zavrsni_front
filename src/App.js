@@ -14,8 +14,10 @@ function App() {
   const [loginError, setLoginError] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [user, setUser] = useState();
 
-  const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
+  // const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
+  const API_BASE_URL = 'http://localhost:8080';
 
   useEffect(() => {
     async function fetchTasks() {
@@ -60,7 +62,9 @@ function App() {
 
       if (response.ok) {
         const user = await response.json();
+        setUser(user);
         console.log('Logged in as:', user);
+        console.log(tasks);
         setIsAuthenticated(true);
         setLoginError(false);
         setShowTasks(true); // Show tasks after successful login
@@ -102,13 +106,22 @@ function App() {
     setShowCalendar(true); // Show calendar when calendar is clicked
   };
 
-  const handleTaskFormSubmit = async (taskName, description, dateOfCreation, id) => {
+  const handleSettingsClick = () => {
+    setShowTaskForm(false);
+    setShowSettings(true);
+    setShowTasks(false);
+    setShowCalendar(false); 
+  };
+
+  const handleTaskFormSubmit = async (taskName, description, dueDate, dueTime, id, priority) => {
     try {
       const task = JSON.stringify({
         taskName: taskName,
         description: description,
-        dateOfCreation: dateOfCreation,
+        dueDate: dueDate,
+        dueTime: dueTime,
         accountId: id,
+        priority: priority
       });
 
       const response = await fetch(`${API_BASE_URL}/api/v1/task`, {
@@ -147,7 +160,7 @@ function App() {
           onLogout={handleLogout}
           onAddTask={handleAddTaskClick}
           onHome={handleHomeClick}
-          onSettings={() => setShowSettings(true)}
+          onSettings={handleSettingsClick}
           onCalendar={handleCalendarClick} // Add calendar click handler
         />
 
@@ -168,7 +181,7 @@ function App() {
         )}
 
         {isAuthenticated && showSettings && (
-          <Settings />
+          <Settings user={user}/>
         )}
       </div>
     </div>

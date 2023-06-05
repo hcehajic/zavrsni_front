@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/LoginForm.css';
+import GoogleLoginButton from './GoogleLoginButton';
 
 function LoginForm({ onLogin, setIsAuthenticated }) {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -12,11 +13,11 @@ function LoginForm({ onLogin, setIsAuthenticated }) {
       if (success) {
         setIsAuthenticated(true);
       } else {
-        setErrorMessage('Invalid credentials');
+        setErrorMessage('Nevalidni kredencijali!');
       }
     } catch (error) {
-      console.error('Error logging in:', error);
-      setErrorMessage('An error occurred while logging in');
+      console.error('Greška prilikom prijave:', error);
+      setErrorMessage('Desila se greška prilikom prijave');
     }
   };
 
@@ -31,15 +32,18 @@ function LoginForm({ onLogin, setIsAuthenticated }) {
         <h2>Login</h2>
         {errorMessage && <div className="error">{errorMessage}</div>}
         <label>
-          Username:
+          Korisničko ime:
           <input type="text" name="username" value={credentials.username} onChange={handleInputChange} />
         </label>
         <label>
-          Password:
+          Lozinka:
           <input type="password" name="password" value={credentials.password} onChange={handleInputChange} />
         </label>
         <button type="submit">Login</button>
       </form>
+      <div>
+        <GoogleLoginButton />
+      </div>
     </div>
   );
 }

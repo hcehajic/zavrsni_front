@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/TaskListItem.css';
 
-const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
+// const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
+const API_BASE_URL = 'http://localhost:8080';
 
 function TaskListItem(props) {
   const { task, onDeleteTask } = props;
@@ -15,8 +16,9 @@ function TaskListItem(props) {
   const fetchSubTasks = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/v1/task/sub/${task.id}`, { mode: 'cors' });
+      // console.log(task.id);
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setSubTasks(data);
     } catch (error) {
       console.error('Failed to fetch sub tasks:', error);
@@ -27,7 +29,7 @@ function TaskListItem(props) {
     fetchSubTasks();
   }, [task]);
 
-  console.log(subTasks);
+  // console.log(subTasks);
 
   const handleAddSubTask = async (e) => {
     e.preventDefault();
@@ -70,24 +72,23 @@ function TaskListItem(props) {
   return (
     <li className="task-list-item">
       <div className="task-list-item-header">
-        <h3 className="task-list-item-title">Task name: {task.taskName}</h3>
+        <h3 className="task-list-item-title">Ime zadatka: {task.taskName}</h3>
         <button className="delete-button" onClick={handleDeleteClick}>
-          Delete Task
+          Obriši zadatak
         </button>
       </div>
-      <p className="task-list-item-description">Task Description: {task.description}</p>
-      <div className="task-list-item-footer">
-        <p className="task-list-item-date">Date of creation: {task.dateOfCreation}</p>
-        <p className="task-list-item-account">Account ID: {task.accountId}</p>
-      </div>
+      <p className="task-list-item-description">Opis: {task.description}</p>
+      <p className="task-list-item-date">Na ovaj datum: {task.dueDate}</p>
+      <p className="task-list-item-time">U ovoliko sati: {task.dueTime}</p>
+      <p className="task-list-item-time">Prioritetni zadatak: {task.priority}</p>
 
       <div className="sub-tasks-container">
-        <h4>Subtasks:</h4>
+        <h4>Podzadaci:</h4>
         {subTasks.map((subTask) => (
           <div key={subTask.id} className="sub-task-item">
             <p>{subTask.description}</p>
             <button className="delete-subtask-button" onClick={() => handleDeleteSubTask(subTask.id)}>
-              Delete
+              Obriši podzadatak
             </button>
           </div>
         ))}
@@ -97,11 +98,11 @@ function TaskListItem(props) {
         <input
           type="text"
           name="subTaskName"
-          placeholder="Add subtask"
+          placeholder="Dodaj podzadatak"
           value={newSubTask}
           onChange={(e) => setNewSubTask(e.target.value)}
         />
-        <button type="submit">Add</button>
+        <button type="submit">Dodaj podzadatak</button>
       </form>
     </li>
   );

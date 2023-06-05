@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
+
 import '../styles/TaskForm.css';
 
 function TaskForm(props) {
   const [taskName, setTaskName] = useState('');
   const [description, setDescription] = useState('');
   const [creationDate, setCreationDate] = useState('');
+  const [creationTime, setCreationTime] = useState('');
+  const [priority, setPriority] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (taskName.trim() === '') {
       return;
     }
-    props.onAddTask(taskName, description, creationDate, props.accountId);
+    console.log(creationTime);
+    props.onAddTask(taskName, description, creationDate, creationTime, props.accountId, priority);
     setTaskName('');
     setDescription('');
     setCreationDate('');
+    setCreationTime('');
   };
 
   const handleCancel = () => {
@@ -23,30 +28,51 @@ function TaskForm(props) {
 
   return (
     <form className="task-form" onSubmit={handleSubmit}>
-      <label htmlFor="taskName">Task Name:</label>
+      <label htmlFor="taskName">Ime zadatka:</label>
       <input
         type="text"
         id="taskName"
         value={taskName}
         onChange={(e) => setTaskName(e.target.value)}
       />
-      <label htmlFor="description">Description:</label>
+      <label htmlFor="description">Opis:</label>
       <textarea
         id="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        rows={4} // Adjust the number of rows as desired
+        rows={4}
       />
-      <label htmlFor="creationDate">Due Date:</label>
+      <label htmlFor="creationDate">Na ovaj datum:</label>
       <input
         type="date"
         id="creationDate"
         value={creationDate || props.defaultDueDate}
         onChange={(e) => setCreationDate(e.target.value)}
       />
-      <button type="submit">Add Task</button>
+
+      <label htmlFor="creationTime">U ovoliko sati:</label>
+      <input
+        type="time"
+        id="creationTime"
+        value={creationTime}
+        onChange={(e) => setCreationTime(e.target.value)}
+      />
+
+      <div className="priority-switch">
+        <label htmlFor="priority">Prioritet:</label>
+        <label className="switch">
+          <input
+            type="checkbox"
+            id="priority"
+            checked={priority}
+            onChange={(e) => setPriority(e.target.checked)}
+          />
+          <span className="slider round"></span>
+        </label>
+      </div>
+      <button type="submit">Dodaj zadatak</button>
       <button type="button" onClick={handleCancel} className="CancelButton">
-        Cancel
+        Otkaži
       </button>
     </form>
   );

@@ -20,7 +20,7 @@ function Calendar({ tasks }) {
 
   // Group tasks by date
   tasks.forEach((task) => {
-    const date = task.dateOfCreation.substring(0, 10); // Extract the date part
+    const date = task.dueDate.substring(0, 10); // Extract the date part
     const taskList = tasksByDate.get(date) || [];
     taskList.push(task.taskName);
     tasksByDate.set(date, taskList);
@@ -48,13 +48,13 @@ function Calendar({ tasks }) {
         <span className="calendar-year">{currentYear}</span>
       </div>
       <div className="calendar-weekdays">
-        <div className="weekday">Sun</div>
-        <div className="weekday">Mon</div>
-        <div className="weekday">Tue</div>
-        <div className="weekday">Wed</div>
-        <div className="weekday">Thu</div>
-        <div className="weekday">Fri</div>
-        <div className="weekday">Sat</div>
+        <div className="weekday">Ned</div>
+        <div className="weekday">Pon</div>
+        <div className="weekday">Uto</div>
+        <div className="weekday">Sri</div>
+        <div className="weekday">Čet</div>
+        <div className="weekday">Pet</div>
+        <div className="weekday">Sub</div>
       </div>
       <div className="calendar-grid">
         <div className="calendar-dates">
