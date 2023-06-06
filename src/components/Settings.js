@@ -3,12 +3,12 @@ import axios from 'axios';
 import '../styles/Settings.css';
 
 const Settings = (props) => {
-  const [selectedFont, setSelectedFont] = useState('Arial');
-  const [selectedColorPT, setSelectedColorPT] = useState('#000000');
-  const [selectedColorNT, setSelectedColorNT] = useState('#000000');
-  const [selectedColorST, setSelectedColorST] = useState('#000000');
-  const [selectedColorH, setSelectedColorH] = useState('#000000');
-  const [selectedColorBG, setSelectedColorBG] = useState('#000000');
+  const [selectedFont, setSelectedFont] = useState(props.userSettings.font);
+  const [selectedColorPT, setSelectedColorPT] = useState(props.userSettings.colorOfPriorityTask);
+  const [selectedColorNT, setSelectedColorNT] = useState(props.userSettings.colorOfNormalTask);
+  const [selectedColorST, setSelectedColorST] = useState(props.userSettings.colorForSubtask);
+  const [selectedColorH, setSelectedColorH] = useState(props.userSettings.colorForHeader);
+  const [selectedColorBG, setSelectedColorBG] = useState(props.userSettings.colorForBackground);
   const [id] = useState(props.user.id);
   const [dateOfBirth] = useState(props.user.dateOfBirth);
   const [name, setName] = useState(props.user.name);
@@ -54,7 +54,7 @@ const Settings = (props) => {
     const selectedFont = event.target.value;
     try {
       setSelectedFont(selectedFont);
-      await axios.post(API_BASE_URL + '/font/' + id, { font: selectedFont }); 
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/font/' + props.userSettings.id, { string: selectedFont }); 
     } catch (error) {
       console.error('Error updating font:', error);
     }
@@ -70,7 +70,7 @@ const Settings = (props) => {
   const handleApplyButtonClickPriorityTask = async () => {
     try {
       // Make HTTP POST request to backend API
-      await axios.post(API_BASE_URL + '/priority/' + id, { color: selectedColorPT });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/priority/' + props.userSettings.id, { string: selectedColorPT });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -84,8 +84,7 @@ const Settings = (props) => {
   // Handle apply button click
   const handleApplyButtonClickNormalTask = async () => {
     try {
-      // Make HTTP POST request to backend API
-      await axios.post(API_BASE_URL + '/normal/' + id, { color: selectedColorNT });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/normal/' +props.userSettings.id, { string: selectedColorNT });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -99,8 +98,7 @@ const Settings = (props) => {
   // Handle apply button click
   const handleApplyButtonClickSubTask = async () => {
     try {
-      // Make HTTP POST request to backend API
-      await axios.post(API_BASE_URL + '/sub/' + id, { color: selectedColorST });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/sub/' + props.userSettings.id, { string: selectedColorST });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -114,8 +112,7 @@ const Settings = (props) => {
   // Handle apply button click
   const handleApplyButtonClickHeader = async () => {
     try {
-      // Make HTTP POST request to backend API
-      await axios.post(API_BASE_URL + '/header/' + id, { color: selectedColorH });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/header/' + props.userSettings.id, { string: selectedColorH });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -130,7 +127,7 @@ const Settings = (props) => {
   const handleApplyButtonClickBackground = async () => {
     try {
       // Make HTTP POST request to backend API
-      await axios.post(API_BASE_URL + '/background/' + id, { color: selectedColorBG });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/background/' + props.userSettings.id, { string: selectedColorBG });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -163,11 +160,17 @@ const Settings = (props) => {
     setInputValueFontSize(event.target.value);
   };
 
-  const handleSaveButtonClickFontSize = () => {
+  const handleSaveButtonClickFontSize = async () => {
     const newSize = parseInt(inputValueFontSize);
 
     if (newSize && newSize > 0) {
       setFontSize(newSize);
+      try {
+        // Make HTTP POST request to backend API
+        await axios.put(API_BASE_URL + '/api/v1/account/settings/fontsize/' + props.userSettings.id, { size: newSize });
+      } catch (error) {
+        console.error('Error updating font size:', error);
+      }
     }
 
     setIsEditingFontSize(false);

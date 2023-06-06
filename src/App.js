@@ -15,6 +15,7 @@ function App() {
   const [showTasks, setShowTasks] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [user, setUser] = useState();
+  const [userSettings, setUserSettings] = useState();
 
   // const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
   const API_BASE_URL = 'http://localhost:8080';
@@ -68,6 +69,17 @@ function App() {
         setIsAuthenticated(true);
         setLoginError(false);
         setShowTasks(true); // Show tasks after successful login
+        async function fetchSettings() {
+          try {
+            const response = await fetch(`${API_BASE_URL}/api/v1/account/settings/${user.id}`, { mode: 'cors' });
+            const data = await response.json();
+            console.log(data);
+            setUserSettings(data);
+          } catch (error) {
+            console.error('Failed to fetch tasks:', error);
+          }
+        }
+        fetchSettings();
       } else {
         setLoginError(true);
         console.error('Invalid data');
@@ -181,7 +193,7 @@ function App() {
         )}
 
         {isAuthenticated && showSettings && (
-          <Settings user={user}/>
+          <Settings user={user} userSettings={userSettings}/>
         )}
       </div>
     </div>
