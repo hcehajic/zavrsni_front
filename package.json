@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/jest-dom": "^5.16.7",
+    "@testing-library/react": "^13.5.1",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "rc-time-picker": "^3.7.3",
     "react": "^18.2.0",
-    "react-datepicker": "^4.12.0",
-    "react-dom": "^18.2.0",
-    "react-google-login": "^5.2.2",
-    "react-scripts": "5.0.1",
+    "react-datepicker": "^5.7.3",
+    "react-dom": "^18.2.2",
+    "react-google-login": "^6.0.0",
+    "react-scripts": "5.0.3",
     "react-time-picker": "^6.2.0",
     "react-time-picker-custom": "^0.1.2",
     "react-timepicker": "^2.0.2",
@@ -23,6 +23,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "eslintConfig": {
     "extends": [
