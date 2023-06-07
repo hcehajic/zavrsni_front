@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/TaskListItem.css';
 
-// const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
+// const API_BASE_URL = 'http://localhost:8080';
 
 function TaskListItem(props) {
   const { task, onDeleteTask } = props;

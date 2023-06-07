@@ -17,8 +17,8 @@ function App() {
   const [user, setUser] = useState();
   const [userSettings, setUserSettings] = useState();
 
-  // const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
-  const API_BASE_URL = 'http://localhost:8080';
+  const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
+  // const API_BASE_URL = 'http://localhost:8080';
 
   useEffect(() => {
     async function fetchTasks() {

@@ -31,8 +31,8 @@ const Settings = (props) => {
   const [inputValue, setInputValue] = useState('');
   const [response, setResponse] = useState('');
 
-  // const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
-  const API_BASE_URL = 'http://localhost:8080';
+  const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
+  // const API_BASE_URL = 'http://localhost:8080';
 
   const handleInputChangePhoneCode = (event) => {
     setInputValue(event.target.value);
