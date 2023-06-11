@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/Settings.css';
+import QRCode from 'react-qr-code';
 
 const Settings = (props) => {
   const [selectedFont, setSelectedFont] = useState(props.userSettings.font);
@@ -9,6 +10,8 @@ const Settings = (props) => {
   const [selectedColorST, setSelectedColorST] = useState(props.userSettings.colorForSubtask);
   const [selectedColorH, setSelectedColorH] = useState(props.userSettings.colorForHeader);
   const [selectedColorBG, setSelectedColorBG] = useState(props.userSettings.colorForBackground);
+  const [phoneLoginString] = useState(props.userSettings.phoneLoginString);
+  const [qrCodeValue] = useState(props.userSettings.phoneLoginString + '@' + props.user.id);
   const [id] = useState(props.user.id);
   const [dateOfBirth] = useState(props.user.dateOfBirth);
   const [name, setName] = useState(props.user.name);
@@ -54,7 +57,7 @@ const Settings = (props) => {
     const selectedFont = event.target.value;
     try {
       setSelectedFont(selectedFont);
-      await axios.put(API_BASE_URL + '/api/v1/account/settings/font/' + props.userSettings.id, { string: selectedFont }); 
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/font/' + props.userSettings.id, { font: selectedFont }); 
     } catch (error) {
       console.error('Error updating font:', error);
     }
@@ -70,7 +73,7 @@ const Settings = (props) => {
   const handleApplyButtonClickPriorityTask = async () => {
     try {
       // Make HTTP POST request to backend API
-      await axios.put(API_BASE_URL + '/api/v1/account/settings/priority/' + props.userSettings.id, { string: selectedColorPT });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/priority/' + props.userSettings.id, { priority: selectedColorPT });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -84,7 +87,7 @@ const Settings = (props) => {
   // Handle apply button click
   const handleApplyButtonClickNormalTask = async () => {
     try {
-      await axios.put(API_BASE_URL + '/api/v1/account/settings/normal/' +props.userSettings.id, { string: selectedColorNT });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/normal/' +props.userSettings.id, { normal: selectedColorNT });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -98,7 +101,7 @@ const Settings = (props) => {
   // Handle apply button click
   const handleApplyButtonClickSubTask = async () => {
     try {
-      await axios.put(API_BASE_URL + '/api/v1/account/settings/sub/' + props.userSettings.id, { string: selectedColorST });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/sub/' + props.userSettings.id, { sub: selectedColorST });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -112,7 +115,7 @@ const Settings = (props) => {
   // Handle apply button click
   const handleApplyButtonClickHeader = async () => {
     try {
-      await axios.put(API_BASE_URL + '/api/v1/account/settings/header/' + props.userSettings.id, { string: selectedColorH });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/header/' + props.userSettings.id, { header: selectedColorH });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -127,7 +130,7 @@ const Settings = (props) => {
   const handleApplyButtonClickBackground = async () => {
     try {
       // Make HTTP POST request to backend API
-      await axios.put(API_BASE_URL + '/api/v1/account/settings/background/' + props.userSettings.id, { string: selectedColorBG });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/background/' + props.userSettings.id, { background: selectedColorBG });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -386,11 +389,13 @@ const Settings = (props) => {
       </div>
       <div>
         <h2>Prijavljivanje na mobilni uređaj</h2>
-        <p>Unesite kod sa uređaja:</p>
         <div>
-          <input type="text" value={inputValue} onChange={handleInputChangePhoneCode} />
-          <button onClick={handleButtonClickPhoneCode}>Send Request</button>
-          {response && <p>Response: {response}</p>}
+          <QRCode
+              size = {300}
+              bgColor = 'white'
+              fgColor = 'black'
+              value = {phoneLoginString + '@' + id}
+            />
         </div>
       </div>
     </div>

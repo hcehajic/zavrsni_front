@@ -177,11 +177,11 @@ function App() {
         />
 
         {showTaskForm && (
-          <TaskForm onAddTask={handleTaskFormSubmit} accountId={1} onCancel={() => setShowTaskForm(false)} />
+          <TaskForm onAddTask={handleTaskFormSubmit} accountId={user.id} onCancel={() => setShowTaskForm(false)} />
         )}
 
         {isAuthenticated && !showSettings && showTasks && (
-          <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} API_BASE_URL={API_BASE_URL} />
+          <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} uid={user.id} API_BASE_URL={API_BASE_URL} />
         )}
 
         {isAuthenticated && showCalendar && (

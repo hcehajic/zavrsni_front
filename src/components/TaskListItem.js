@@ -78,9 +78,9 @@ function TaskListItem(props) {
         </button>
       </div>
       <p className="task-list-item-description">Opis: {task.description}</p>
-      <p className="task-list-item-date">Na ovaj datum: {task.dueDate}</p>
+      <p className="task-list-item-date">Na ovaj datum: {new Date(task.dueDate).toLocaleDateString('en-GB')}</p>
       <p className="task-list-item-time">U ovoliko sati: {task.dueTime}</p>
-      <p className="task-list-item-time">Prioritetni zadatak: {task.priority}</p>
+      <p className="task-list-item-time">Prioritetni zadatak: {task.priority ? "DA" : "NE"}</p>
 
       <div className="sub-tasks-container">
         <h4>Podzadaci:</h4>

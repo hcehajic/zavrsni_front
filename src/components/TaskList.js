@@ -1,11 +1,15 @@
 import TaskListItem from './TaskListItem';
 
 function TaskList(props) {
-  const { tasks, onDeleteTask } = props;
-
+  const { tasks, onDeleteTask, uid } = props;
+  // filtering tasks for user
+  const filteredTasks = tasks.filter((task) => {
+    if (task.accountId === uid) return true;
+    return false;
+  });
   return (
     <ul>
-      {tasks.map((task) => (
+      {filteredTasks.map((task) => (
         <TaskListItem key={task.id} task={task} onDeleteTask={onDeleteTask} />
       ))}
     </ul>
