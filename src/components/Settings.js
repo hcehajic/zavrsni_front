@@ -8,7 +8,7 @@ const Settings = (props) => {
   const [selectedColorPT, setSelectedColorPT] = useState(props.userSettings.colorOfPriorityTask);
   const [selectedColorNT, setSelectedColorNT] = useState(props.userSettings.colorOfNormalTask);
   const [selectedColorST, setSelectedColorST] = useState(props.userSettings.colorForSubtask);
-  const [selectedColorH, setSelectedColorH] = useState(props.userSettings.colorForHeader);
+  const [selectedColorF, setselectedColorF] = useState(props.userSettings.colorForFont);
   const [selectedColorBG, setSelectedColorBG] = useState(props.userSettings.colorForBackground);
   const [phoneLoginString] = useState(props.userSettings.phoneLoginString);
   const [qrCodeValue] = useState(props.userSettings.phoneLoginString + '@' + props.user.id);
@@ -107,15 +107,15 @@ const Settings = (props) => {
     }
   };
 
-  const handleColorChangeHeader = (event) => {
-    const selectedColorH = event.target.value;
-    setSelectedColorH(selectedColorH);
+  const handleColorChanngeFColor = (event) => {
+    const selectedColorF = event.target.value;
+    setselectedColorF(selectedColorF);
   };
 
   // Handle apply button click
-  const handleApplyButtonClickHeader = async () => {
+  const handleApplyButtonClickFColor = async () => {
     try {
-      await axios.put(API_BASE_URL + '/api/v1/account/settings/header/' + props.userSettings.id, { header: selectedColorH });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/fcolor/' + props.userSettings.id, { fcolor: selectedColorF });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -214,18 +214,48 @@ const Settings = (props) => {
     }
   };
 
+  const handleSaveButtonName = async (nameInput) => {
+    try {
+      // Make HTTP POST request to backend API
+      await axios.put(API_BASE_URL + '/api/v1/accounts/name/' + id, { name: nameInput });
+    } catch (error) {
+      console.error('Error updating name:', error);
+    }
+  };
+
+  const handleSaveButtonSurname = async (surnameInput) => {
+    try {
+      // Make HTTP POST request to backend API
+      await axios.put(API_BASE_URL + '/api/v1/accounts/surname/' + id, { surname: surnameInput });
+    } catch (error) {
+      // 
+    }
+  };
+
+  const handleSaveButtonPassword = async (passInput) => {
+    try {
+      // Make HTTP POST request to backend API
+      await axios.put(API_BASE_URL + '/api/v1/accounts/pass/' + id, { password: passInput });
+    } catch (error) {
+      console.error('Error updating password:', error);
+    }
+  };
+
   const handleSaveButtonClick = (field) => {
     switch (field) {
       case 'name':
         setName(nameInput);
+        handleSaveButtonName(nameInput);
         setIsEditingName(false);
         break;
       case 'surname':
         setSurname(surnameInput);
+        handleSaveButtonSurname(surnameInput);
         setIsEditingSurname(false);
         break;
       case 'password':
         setPassword(passwordInput);
+        handleSaveButtonPassword(passwordInput);
         setIsEditingPassword(false);
         break;
       default:
@@ -304,7 +334,7 @@ const Settings = (props) => {
           <label htmlFor="username">Korisničko ime: {username}</label>
         </div>
         <div>
-          <label htmlFor="dateOfBirth">Datum rođenja: {dateOfBirth}</label>
+          <label htmlFor="dateOfBirth">Datum rođenja: {new Date(dateOfBirth).toLocaleDateString('en-GB')}</label>
         </div>
 
       </div>
@@ -347,6 +377,14 @@ const Settings = (props) => {
           )}
         </div>
 
+        <label htmlFor="color-picker">Boja teksta:</label>
+        <input type="color" id="color-picker" value={selectedColorF} onChange={handleColorChanngeFColor} />
+        <div className="color-box" style={{ backgroundColor: selectedColorF }}></div>
+
+        <button className="apply-button" onClick={handleApplyButtonClickFColor}>
+          Primijeni
+        </button>
+
         <label htmlFor="color-picker">Prioritetni zadaci:</label>
         <input type="color" id="color-picker" value={selectedColorPT} onChange={handleColorChangePriorityTask} />
         <div className="color-box" style={{ backgroundColor: selectedColorPT }}></div>
@@ -371,14 +409,6 @@ const Settings = (props) => {
           Primijeni
         </button>
 
-        <label htmlFor="color-picker">Zaglavlje:</label>
-        <input type="color" id="color-picker" value={selectedColorH} onChange={handleColorChangeHeader} />
-        <div className="color-box" style={{ backgroundColor: selectedColorH }}></div>
-
-        <button className="apply-button" onClick={handleApplyButtonClickHeader}>
-          Primijeni
-        </button>
-
         <label htmlFor="color-picker">Pozadina:</label>
         <input type="color" id="color-picker" value={selectedColorBG} onChange={handleColorChangeBackground} />
         <div className="color-box" style={{ backgroundColor: selectedColorBG }}></div>
@@ -394,7 +424,7 @@ const Settings = (props) => {
               size = {300}
               bgColor = 'white'
               fgColor = 'black'
-              value = {phoneLoginString + '@' + id}
+              value = {phoneLoginString}
             />
         </div>
       </div>

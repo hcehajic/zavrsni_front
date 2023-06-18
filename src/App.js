@@ -5,6 +5,7 @@ import TaskList from './components/TaskList';
 import LoginForm from './components/LoginForm';
 import Settings from './components/Settings';
 import Calendar from './components/Calendar';
+import Registration from './components/Registration';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -16,6 +17,7 @@ function App() {
   const [showCalendar, setShowCalendar] = useState(false);
   const [user, setUser] = useState();
   const [userSettings, setUserSettings] = useState();
+  const [showRegistration, setShowRegistration] = useState(false);
 
   const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
   // const API_BASE_URL = 'http://localhost:8080';
@@ -122,7 +124,7 @@ function App() {
     setShowTaskForm(false);
     setShowSettings(true);
     setShowTasks(false);
-    setShowCalendar(false); 
+    setShowCalendar(false);
   };
 
   const handleTaskFormSubmit = async (taskName, description, dueDate, dueTime, id, priority) => {
@@ -188,12 +190,19 @@ function App() {
           <Calendar tasks={tasks} />
         )}
 
-        {!isAuthenticated && (
-          <LoginForm onLogin={handleLoginSubmit} loginError={loginError} />
+        {!isAuthenticated && !showRegistration && (
+          <div>
+            <LoginForm onLogin={handleLoginSubmit} loginError={loginError} />
+            <button className="registration" onClick={() => setShowRegistration(true)}>Registruj se</button>
+          </div>
+        )}
+
+        {!isAuthenticated && showRegistration && (
+          <Registration onCancel={() => setShowRegistration(false)} />
         )}
 
         {isAuthenticated && showSettings && (
-          <Settings user={user} userSettings={userSettings}/>
+          <Settings user={user} userSettings={userSettings} />
         )}
       </div>
     </div>

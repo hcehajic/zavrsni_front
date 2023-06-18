@@ -29,7 +29,7 @@ function LoginForm({ onLogin, setIsAuthenticated }) {
   return (
     <div className="LoginForm">
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2>Prijava</h2>
         {errorMessage && <div className="error">{errorMessage}</div>}
         <label>
           Korisničko ime:
@@ -39,7 +39,7 @@ function LoginForm({ onLogin, setIsAuthenticated }) {
           Lozinka:
           <input type="password" name="password" value={credentials.password} onChange={handleInputChange} />
         </label>
-        <button type="submit">Login</button>
+        <button type="submit">Prijavi se</button>
       </form>
       <div>
         <GoogleLoginButton />
