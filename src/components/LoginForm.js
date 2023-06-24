@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/LoginForm.css';
 import GoogleLoginButton from './GoogleLoginButton';
 
-function LoginForm({ onLogin, setIsAuthenticated }) {
+function LoginForm({ onLogin, setIsAuthenticated, onRegist }) {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -32,7 +32,7 @@ function LoginForm({ onLogin, setIsAuthenticated }) {
         <h2>Prijava</h2>
         {errorMessage && <div className="error">{errorMessage}</div>}
         <label>
-          Korisničko ime:
+          Korisničko ime ili email:
           <input type="text" name="username" value={credentials.username} onChange={handleInputChange} />
         </label>
         <label>
@@ -44,6 +44,7 @@ function LoginForm({ onLogin, setIsAuthenticated }) {
       <div>
         <GoogleLoginButton />
       </div>
+      <button className="registration" onClick={onRegist}>Registruj se</button>
     </div>
   );
 }

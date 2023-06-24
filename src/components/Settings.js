@@ -10,14 +10,17 @@ const Settings = (props) => {
   const [selectedColorST, setSelectedColorST] = useState(props.userSettings.colorForSubtask);
   const [selectedColorF, setselectedColorF] = useState(props.userSettings.colorForFont);
   const [selectedColorBG, setSelectedColorBG] = useState(props.userSettings.colorForBackground);
+  const [selectedColorPB, setSelectedColorPB] = useState(props.userSettings.colorForProgress);
   const [phoneLoginString] = useState(props.userSettings.phoneLoginString);
-  const [qrCodeValue] = useState(props.userSettings.phoneLoginString + '@' + props.user.id);
   const [id] = useState(props.user.id);
   const [dateOfBirth] = useState(props.user.dateOfBirth);
   const [name, setName] = useState(props.user.name);
   const [surname, setSurname] = useState(props.user.surname);
   const [password, setPassword] = useState(props.user.password);
   const [username] = useState(props.user.username);
+  const [email, setEmail] = useState(props.user.email);
+  const [kidName, setKidName] = useState(props.user.kidName);
+  const [kidMale] = useState(props.user.kidMale);
 
   const [fontSize, setFontSize] = useState(16); // Initial font size
   const [isEditingFontSize, setIsEditingFontSize] = useState(false);
@@ -26,53 +29,35 @@ const Settings = (props) => {
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingSurname, setIsEditingSurname] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [isEditingKidName, setIsEditingKidName] = useState(false);
 
   const [nameInput, setNameInput] = useState('');
   const [surnameInput, setSurnameInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
-
-  const [inputValue, setInputValue] = useState('');
-  const [response, setResponse] = useState('');
+  const [emailInput, setEmailInput] = useState('');
+  const [kidNameInput, setKidNameInput] = useState('');
 
   const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
   // const API_BASE_URL = 'http://localhost:8080';
 
-  const handleInputChangePhoneCode = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  const handleButtonClickPhoneCode = async () => {
-    // gotta figure out on server how to activate phone with correct code
-    // try {
-    //   const response = await fetch(API_BASE_URL + '/api/v1/account/settings/${inputValue}');
-    //   const data = await response.json();
-    //   setResponse(data);
-    // } catch (error) {
-    //   console.error('Error making API request:', error);
-    // }
-  };
-
-  // Handle font selection change
   const handleFontChange = async (event) => {
     const selectedFont = event.target.value;
     try {
       setSelectedFont(selectedFont);
-      await axios.put(API_BASE_URL + '/api/v1/account/settings/font/' + props.userSettings.id, { font: selectedFont }); 
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/font/' + props.userSettings.id, { font: selectedFont });
     } catch (error) {
       console.error('Error updating font:', error);
     }
   };
 
-  // Handle color selection change
   const handleColorChangePriorityTask = (event) => {
     const selectedColorPT = event.target.value;
     setSelectedColorPT(selectedColorPT);
   };
 
-  // Handle apply button click
   const handleApplyButtonClickPriorityTask = async () => {
     try {
-      // Make HTTP POST request to backend API
       await axios.put(API_BASE_URL + '/api/v1/account/settings/priority/' + props.userSettings.id, { priority: selectedColorPT });
     } catch (error) {
       console.error('Error updating color:', error);
@@ -84,10 +69,9 @@ const Settings = (props) => {
     setSelectedColorNT(selectedColorNT);
   };
 
-  // Handle apply button click
   const handleApplyButtonClickNormalTask = async () => {
     try {
-      await axios.put(API_BASE_URL + '/api/v1/account/settings/normal/' +props.userSettings.id, { normal: selectedColorNT });
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/normal/' + props.userSettings.id, { normal: selectedColorNT });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -131,6 +115,21 @@ const Settings = (props) => {
     try {
       // Make HTTP POST request to backend API
       await axios.put(API_BASE_URL + '/api/v1/account/settings/background/' + props.userSettings.id, { background: selectedColorBG });
+    } catch (error) {
+      console.error('Error updating color:', error);
+    }
+  };
+
+  const handleColorChangeProgress = (event) => {
+    const selectedColorPB = event.target.value;
+    setSelectedColorPB(selectedColorPB);
+  };
+
+  // Handle apply button click
+  const handleApplyButtonClickProgress = async () => {
+    try {
+      // Make HTTP POST request to backend API
+      await axios.put(API_BASE_URL + '/api/v1/account/settings/progress/' + props.userSettings.id, { progress: selectedColorPB });
     } catch (error) {
       console.error('Error updating color:', error);
     }
@@ -193,6 +192,14 @@ const Settings = (props) => {
         setIsEditingPassword(true);
         setPasswordInput(password);
         break;
+      case 'email':
+        setIsEditingEmail(true);
+        setEmailInput(email);
+        break;
+      case 'kidName':
+        setIsEditingKidName(true);
+        setKidName(kidName);
+        break;
       default:
         break;
     }
@@ -209,6 +216,12 @@ const Settings = (props) => {
       case 'password':
         setPasswordInput(event.target.value);
         break;
+      case 'email':
+        setEmailInput(event.target.value);
+        break;
+      case 'kidName':
+        setKidNameInput(event.target.value);
+        break;
       default:
         break;
     }
@@ -219,7 +232,7 @@ const Settings = (props) => {
       // Make HTTP POST request to backend API
       await axios.put(API_BASE_URL + '/api/v1/accounts/name/' + id, { name: nameInput });
     } catch (error) {
-      console.error('Error updating name:', error);
+      // console.error('Error updating name:', error);
     }
   };
 
@@ -228,7 +241,7 @@ const Settings = (props) => {
       // Make HTTP POST request to backend API
       await axios.put(API_BASE_URL + '/api/v1/accounts/surname/' + id, { surname: surnameInput });
     } catch (error) {
-      // 
+      // console.error('Error updating surname:', error);
     }
   };
 
@@ -237,7 +250,25 @@ const Settings = (props) => {
       // Make HTTP POST request to backend API
       await axios.put(API_BASE_URL + '/api/v1/accounts/pass/' + id, { password: passInput });
     } catch (error) {
-      console.error('Error updating password:', error);
+      // console.error('Error updating password:', error);
+    }
+  };
+
+  const handleSaveButtonEmail = async (emailInput) => {
+    try {
+      // Make HTTP POST request to backend API
+      await axios.put(API_BASE_URL + '/api/v1/accounts/email/' + id, { email: emailInput });
+    } catch (error) {
+      // console.error('Error updating email:', error); 
+    }
+  };
+
+  const handleSaveButtonKidName = async (kidNameInput) => {
+    try {
+      // Make HTTP POST request to backend API
+      await axios.put(API_BASE_URL + '/api/v1/accounts/kid/' + id, { kidName: kidNameInput });
+    } catch (error) {
+      // console.error('Error updating kids name:', error);
     }
   };
 
@@ -257,6 +288,16 @@ const Settings = (props) => {
         setPassword(passwordInput);
         handleSaveButtonPassword(passwordInput);
         setIsEditingPassword(false);
+        break;
+      case 'email':
+        setEmail(emailInput);
+        handleSaveButtonEmail(emailInput);
+        setIsEditingEmail(false);
+        break;
+      case 'kidName':
+        setKidName(kidNameInput);
+        handleSaveButtonKidName(kidNameInput);
+        setIsEditingKidName(false);
         break;
       default:
         break;
@@ -331,6 +372,54 @@ const Settings = (props) => {
         </div>
 
         <div>
+          <label htmlFor="email">Email:</label>
+          {!isEditingEmail ? (
+            <span>{email}</span>
+          ) : (
+            <div>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                value={emailInput}
+                onChange={handleInputChange}
+              />
+              <button onClick={() => handleSaveButtonClick('email')}>Sačuvaj</button>
+            </div>
+          )}
+          {!isEditingEmail && (
+            <button onClick={() => handleEditButtonClick('email')}>Uredi</button>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="kidName">Ime djeteta:</label>
+          {!isEditingKidName ? (
+            <span>{kidName}</span>
+          ) : (
+            <div>
+              <input
+                type="text"
+                id="kidName"
+                name="kidName"
+                value={kidNameInput}
+                onChange={handleInputChange}
+              />
+              <button onClick={() => handleSaveButtonClick('kidName')}>Sačuvaj</button>
+            </div>
+          )}
+          {!isEditingKidName && (
+            <button onClick={() => handleEditButtonClick('kidName')}>Uredi</button>
+          )}
+          {kidMale && (
+            <p>Spol djeteta: Muško</p>
+          )}
+          {!kidMale && (
+            <p>Spol djeteta: Žensko</p>
+          )}
+        </div>
+
+        <div>
           <label htmlFor="username">Korisničko ime: {username}</label>
         </div>
         <div>
@@ -341,7 +430,7 @@ const Settings = (props) => {
       <div>
         <h2>Postavke aplikacije</h2>
         <label htmlFor="font-select">Izaberi font:</label>
-        <select id="font-select" value={selectedFont} onChange={handleFontChange}>
+        <select id="font-select" value={selectedFont} style={{ fontFamily: selectedFont }} onChange={handleFontChange}>
           {fontOptions.map((font) => (
             <option
               key={font}
@@ -416,16 +505,24 @@ const Settings = (props) => {
         <button className="apply-button" onClick={handleApplyButtonClickBackground}>
           Primijeni
         </button>
+
+        <label htmlFor="color-picker">Napredak u zadatku:</label>
+        <input type="color" id="color-picker" value={selectedColorPB} onChange={handleColorChangeProgress} />
+        <div className="color-box" style={{ backgroundColor: selectedColorPB }}></div>
+
+        <button className="apply-button" onClick={handleApplyButtonClickProgress}>
+          Primijeni
+        </button>
       </div>
       <div>
         <h2>Prijavljivanje na mobilni uređaj</h2>
         <div>
           <QRCode
-              size = {300}
-              bgColor = 'white'
-              fgColor = 'black'
-              value = {phoneLoginString}
-            />
+            size={300}
+            bgColor='white'
+            fgColor='black'
+            value={phoneLoginString}
+          />
         </div>
       </div>
     </div>

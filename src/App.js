@@ -30,7 +30,7 @@ function App() {
         console.log(data);
         setTasks(data);
       } catch (error) {
-        console.error('Failed to fetch tasks:', error);
+        console.error('Neuspjesno hvatanje zadataka:', error);
       }
     }
 
@@ -46,10 +46,10 @@ function App() {
           'Content-Type': 'application/json'
         }
       });
-      console.log('Task deleted');
+      console.log('Zadatak izbrisan');
       setTasks(updatedTasks);
     } catch (error) {
-      console.error('Error deleting task:', error);
+      console.error('Greska prilikom brisanja zadatka:', error);
     }
   };
 
@@ -66,7 +66,7 @@ function App() {
       if (response.ok) {
         const user = await response.json();
         setUser(user);
-        console.log('Logged in as:', user);
+        console.log('Prijavljen kao:', user);
         console.log(tasks);
         setIsAuthenticated(true);
         setLoginError(false);
@@ -78,21 +78,21 @@ function App() {
             console.log(data);
             setUserSettings(data);
           } catch (error) {
-            console.error('Failed to fetch tasks:', error);
+            console.error('Greska prilikom hvatanja postavki:', error);
           }
         }
         fetchSettings();
       } else {
         setLoginError(true);
-        console.error('Invalid data');
+        console.error('Nevalidni podaci');
       }
     } catch (error) {
-      console.error('Error logging in:', error);
+      console.error('Greska prilikom prijavljivanja:', error);
     }
   };
 
   const handleLogout = () => {
-    console.log('Logging out...');
+    console.log('Odjavljivanje');
     setIsAuthenticated(false);
     setShowTaskForm(false);
     setShowTasks(false);
@@ -148,14 +148,14 @@ function App() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Task added:', data);
+        console.log('Dodan zadatak:', data);
         setTasks([...tasks, data]);
         setShowTasks(true); // Show task list after adding a new task
       } else {
-        console.error('Failed to add task:', response.status);
+        console.error('Neuspjesno dodavanje zadatka:', response.status);
       }
     } catch (error) {
-      console.error('Error adding task:', error);
+      console.error('Greska prilikom dodavanja zadatka:', error);
     }
     setShowTaskForm(false);
   };
@@ -192,8 +192,7 @@ function App() {
 
         {!isAuthenticated && !showRegistration && (
           <div>
-            <LoginForm onLogin={handleLoginSubmit} loginError={loginError} />
-            <button className="registration" onClick={() => setShowRegistration(true)}>Registruj se</button>
+            <LoginForm onLogin={handleLoginSubmit} onRegist={() => setShowRegistration(true)} loginError={loginError} />
           </div>
         )}
 

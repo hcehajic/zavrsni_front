@@ -6,6 +6,9 @@ const Registration = ({ onCancel }) => {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [kidName, setKidName] = useState('');
+  const [kidMale, setKidMale] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [accountData, setAccountData] = useState(null);
 
@@ -15,21 +18,31 @@ const Registration = ({ onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const accountRequest = {
+      name: name,
+      surname: surname,
+      password: password,
+      email: email,
+      kidName: kidName,
+      kidMale: kidMale,
+      dateOfBirth: dateOfBirth
+    };
+
     axios
-      .post(`${API_BASE_URL}/api/v1/accounts/create`, {
-        name: name,
-        surname: surname,
-        password: password,
-        dateOfBirth: dateOfBirth
-      })
+      .post(`${API_BASE_URL}/api/v1/accounts/create`, accountRequest)
       .then((response) => {
         console.log(response.data);
 
-        setAccountData(response.data);
+        const createdAccount = response.data;
+
+        setAccountData(createdAccount);
 
         setName('');
         setSurname('');
         setPassword('');
+        setEmail('');
+        setKidName('');
+        setKidMale(false);
         setDateOfBirth('');
         createUserSettings(response.data.id);
       })
@@ -61,10 +74,13 @@ const Registration = ({ onCancel }) => {
           <h2>Kreiran profil:</h2>
           <p>Ime: {accountData.name}</p>
           <p>Prezime: {accountData.surname}</p>
-          <p>Datum rođenja: {accountData.dateOfBirth}</p>
+          <p>Email: {accountData.email}</p>
+          <p>Ime djeteta: {accountData.kidName}</p>
+          <p>Spol djeteta: {accountData.kidMale ? 'Muško' : 'Žensko'}</p>
+          <p>Datum rođenja djeteta: {accountData.dateOfBirth}</p>
           <p>Korisničko ime: {accountData.username}</p>
           <p>Lozinka: {accountData.password}</p>
-          <p>*NAPOMENA* Za prijavu koristite Vaše korisničko ime i lozinku!</p>
+          <p>*NAPOMENA* Za prijavu koristite Vaše korisničko ime ili email i lozinku!</p>
           <button className="login-button" onClick={handleLoginClick}>Idi na Prijavu</button>
         </div>
       </div>
@@ -93,12 +109,31 @@ const Registration = ({ onCancel }) => {
         <br />
 
         <label>
-          Datum rođenja:
-          <input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} required />
+          Email:
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </label>
         <br />
 
-        <button type="submit" className="submit-button">Registruj se</button>
+        <label>
+          Ime djeteta:
+          <input type="text" value={kidName} onChange={(e) => setKidName(e.target.value)} />
+        </label>
+        <br />
+
+        <label>Spol djeteta:</label>
+        <select value={kidMale ? 'Musko' : 'Zensko'} onChange={(e) => setKidMale(e.target.value === 'Musko')}>
+          <option value="Musko">Muško</option>
+          <option value="Zensko">Žensko</option>
+        </select>
+        <br />
+
+        <label>
+          Datum rođenja djeteta:
+          <input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} />
+        </label>
+        <br />
+
+        <button type="submit">Registriraj se</button>
       </form>
     </div>
   );

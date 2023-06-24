@@ -4,6 +4,7 @@ import '../styles/Header.css';
 function Header({ isAuthenticated, onLogout, onAddTask, onSettings, onHome, onCalendar }) {
   const handleLogoutClick = () => {
     onLogout();
+    window.location.reload();
   };
 
   const handleAddTaskClick = () => {
