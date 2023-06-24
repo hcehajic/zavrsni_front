@@ -15,45 +15,30 @@ const GoogleLoginButton = () => {
     console.log(JSON.stringify({ password }));
 
 
-    // try {
-    //   // Check if the user exists by making an API call
-    //   const checkUserResponse = await fetch('YOUR_API_ENDPOINT/checkUser', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ email: profileObj.email }),
-    //   });
+    try {
+      const checkUserResponse = await fetch(`${API_BASE_URL}/api/v1/accounts/${profileObj.email}/${profileObj.googleId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors'
+      });
 
-    //   if (checkUserResponse.ok) {
-    //     // User exists, perform login
-    //     console.log('User exists, perform login');
-    //     // Make an API call to perform the login
-    //     await fetch('YOUR_API_ENDPOINT/login', {
-    //       method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ email: profileObj.email, tokenId }),
-    //       });
-    //       // Handle the successful login
-    //     } else {
-    //       // User doesn't exist, register a new account
-    //       console.log('User does not exist, register new account');
-    //       // Make an API call to register a new account
-    //       await fetch('YOUR_API_ENDPOINT/register', {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ email: profileObj.email, tokenId }),
-    //       });
-    //       // Handle the successful registration
-    //     }
-    //   } catch (error) {
-    //     console.log('Error occurred:', error);
-    //     // Handle the error
-    //   }
+      if (checkUserResponse.ok) {
+        console.log('Korisnik postoji, prijavljivanje...');
+        const success = await onLogin(credentials);
+        if (success) {
+          setIsAuthenticated(true);
+        } else {
+          setErrorMessage('Nevalidni kredencijali!');
+        }
+      } else {
+        
+      }
+    } catch (error) {
+      console.log('Error occurred:', error);
+      // Handle the error
+    }
   };
 
   return (
