@@ -42,7 +42,7 @@ function LoginForm({ onLogin, setIsAuthenticated, onRegist }) {
         <button type="submit">Prijavi se</button>
       </form>
       <div>
-        <GoogleLoginButton />
+        <GoogleLoginButton onLogin={onLogin} setIsAuthenticated={setIsAuthenticated} setErrorMessage={setErrorMessage}/>
       </div>
       <button className="registration" onClick={onRegist}>Registruj se</button>
     </div>

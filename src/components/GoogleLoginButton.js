@@ -1,46 +1,47 @@
 import React from 'react';
 import { GoogleLogin } from 'react-google-login';
 
-const GoogleLoginButton = () => {
+const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
+// const API_BASE_URL = 'http://localhost:8080';
+
+const GoogleLoginButton = (onLogin, setIsAuthenticated) => {
   const responseGoogle = async (response) => {
-    // Handle the response from Google login
-
-    console.log(response);
-
-    const { profileObj } = response;
-    const email = profileObj.email;
-    const password = profileObj.googleId;
-
-    console.log(JSON.stringify({ email }));
-    console.log(JSON.stringify({ password }));
-
-
     try {
-      const checkUserResponse = await fetch(`${API_BASE_URL}/api/v1/accounts/${profileObj.email}/${profileObj.googleId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        mode: 'cors'
-      });
-
-      if (checkUserResponse.ok) {
-        console.log('Korisnik postoji, prijavljivanje...');
-        const success = await onLogin(credentials);
-        if (success) {
-          setIsAuthenticated(true);
-        } else {
-          setErrorMessage('Nevalidni kredencijali!');
-        }
+      if (response.error) {
+        // Handle error
+        console.log(response);
+        console.log('Google login error:', response.error);
       } else {
-        
+        // Get user data from the response
+        const { profileObj } = response;
+        const email = profileObj.email;
+        const password = profileObj.googleId;
+
+        const checkUserResponse = await fetch(`${API_BASE_URL}/api/v1/accounts/${email}/${password}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          mode: 'cors'
+        });
+
+        if (checkUserResponse.ok) {
+          console.log('Korisnik postoji, prijavljivanje...');
+          const success = await onLogin({ username: email, password: password });
+          if (success) {
+            setIsAuthenticated(true);
+          } else {
+            // moram kreirat racun sad jer korisnik ne postoji
+          }
+        } else {
+          // Handle failed API request
+          console.log('Check user API request failed');
+        }
       }
     } catch (error) {
       console.log('Error occurred:', error);
-      // Handle the error
     }
   };
-
   return (
     <div>
       <GoogleLogin
