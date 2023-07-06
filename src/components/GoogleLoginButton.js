@@ -12,7 +12,6 @@ const GoogleLoginButton = (onLogin, setIsAuthenticated) => {
         console.log(response);
         console.log('Google login error:', response.error);
       } else {
-        // Get user data from the response
         const { profileObj } = response;
         const email = profileObj.email;
         const password = profileObj.googleId;
@@ -32,9 +31,9 @@ const GoogleLoginButton = (onLogin, setIsAuthenticated) => {
             setIsAuthenticated(true);
           } else {
             // moram kreirat racun sad jer korisnik ne postoji
+            // al mi response od google ne valja
           }
         } else {
-          // Handle failed API request
           console.log('Check user API request failed');
         }
       }

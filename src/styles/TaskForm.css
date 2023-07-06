@@ -16,26 +16,30 @@
 } 
 
 .task-form input[type="text"],
-.task-form input[type="date"] {
+.task-form input[type="date"],
+.task-form textarea#description {
   padding: 12px;
   margin-bottom: 20px;
   width: 100%;
-  border: none;
+  border: 1px;
+  border-color: #002366;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), 4px 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 16px;
   color: #555555;
+  text-align: center;
 }
 
 .task-form textarea#description {
   padding: 12px;
   margin-bottom: 20px;
-  width: 100%; /* Updated width to 100% */
-  border: none;
+  width: 100%; 
+  border: 1px;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), 4px 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 16px;
   color: #555555;
+  text-align: center;
 }
 
 .task-form button[type="submit"] {
@@ -77,21 +81,24 @@
 .priority-switch {
   display: flex;
   align-items: center;
-  margin-top: 10px;
 }
 
 .priority-switch label {
   margin-right: 10px;
 }
 
-.switch {
+.switch-priority {
   position: relative;
   display: inline-block;
   width: 40px;
   height: 24px;
 }
 
-.slider {
+.switch-priority input[type="checkbox"] {
+  display: none;
+}
+
+.switch-priority .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -100,25 +107,27 @@
   bottom: 0;
   background-color: red;
   transition: 0.4s;
+  border-radius: 24px;
 }
 
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-.slider:before {
+.switch-priority .slider:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 20px;
   width: 20px;
   left: 4px;
   bottom: 2px;
   background-color: white;
   transition: 0.4s;
+  border-radius: 50%;
+}
+
+.switch-priority input[type="checkbox"]:checked + .slider {
+  background-color: green;
+}
+
+.switch-priority input[type="checkbox"]:checked + .slider:before {
+  transform: translateX(16px);
 }
 
 input[type='checkbox']:checked + .slider {
@@ -148,9 +157,14 @@ input[type='date'] {
   font-size: 16px;
   border-radius: 3px;
   border: 1px solid #ccc;
+  direction: rtl;
 }
 
 button[type='submit'],
 button.CancelButton {
   margin-top: 10px;
+}
+
+.time-info {
+  background-color: #d6e3ff;
 }

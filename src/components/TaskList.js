@@ -2,7 +2,6 @@ import TaskListItem from './TaskListItem';
 
 function TaskList(props) {
   const { tasks, onDeleteTask, uid } = props;
-  // filtering tasks for user
   const filteredTasks = tasks.filter((task) => {
     if (task.accountId === uid) return true;
     return false;

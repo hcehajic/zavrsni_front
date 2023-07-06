@@ -1,41 +1,37 @@
 import React, { useState } from 'react';
 import '../styles/Calendar.css';
+
 import TaskForm from './TaskForm';
 
 function Calendar({ tasks }) {
   const [selectedDate, setSelectedDate] = useState(null);
-  const [showTaskForm, setShowTaskForm] = useState(false);
+  const [showTaskFormPopup, setShowTaskFormPopup] = useState(false);
 
   const openTaskForm = (date) => {
     setSelectedDate(date);
-    setShowTaskForm(true);
+    setShowTaskFormPopup(true);
   };
   
   const closeTaskForm = () => {
-    setShowTaskForm(false);
+    setShowTaskFormPopup(false);
   };
 
-  // Create a map to store tasks by date
   const tasksByDate = new Map();
 
-  // Group tasks by date
   tasks.forEach((task) => {
-    const date = task.dueDate.substring(0, 10); // Extract the date part
+    const date = task.dueDate.substring(0, 10);
     const taskList = tasksByDate.get(date) || [];
     taskList.push(task.taskName);
     tasksByDate.set(date, taskList);
   });
 
-  // Create a new Date object for the current month
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
   const monthName = currentDate.toLocaleString('default', { month: 'long' });
 
-  // Get the number of days in the current month
   const numberOfDaysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-  // Create an array of dates for the current month
   const datesOfMonth = Array.from({ length: numberOfDaysInMonth }, (_, index) => {
     const date = new Date(currentYear, currentMonth, index + 1);
     return date.toISOString().substring(0, 10);
@@ -74,12 +70,13 @@ function Calendar({ tasks }) {
           ))}
         </div>
       </div>
-      {showTaskForm && (
-        <TaskForm
-          defaultDueDate={selectedDate}
-          onCancel={closeTaskForm}
-        />
-      )}
+      {showTaskFormPopup && (
+      <div className="popup-overlay">
+        <div className="popup-content">
+          <TaskForm defaultDueDate={selectedDate} onCancel={closeTaskForm} />
+        </div>
+      </div>
+    )}
     </div>
   );
 }

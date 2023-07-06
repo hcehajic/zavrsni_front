@@ -51,16 +51,18 @@ function TaskForm(props) {
       />
 
       <label htmlFor="creationTime">U ovoliko sati:</label>
-      <input
-        type="time"
-        id="creationTime"
-        value={creationTime}
-        onChange={(e) => setCreationTime(e.target.value)}
-      />
+      <div className="time-info">
+        <input
+          type="time"
+          id="creationTime"
+          value={creationTime}
+          onChange={(e) => setCreationTime(e.target.value)}
+        />
+      </div>
 
       <div className="priority-switch">
         <label htmlFor="priority">Prioritet:</label>
-        <label className="switch">
+        <label className="switch-priority">
           <input
             type="checkbox"
             id="priority"

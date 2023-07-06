@@ -70,7 +70,7 @@ function App() {
         console.log(tasks);
         setIsAuthenticated(true);
         setLoginError(false);
-        setShowTasks(true); // Show tasks after successful login
+        setShowTasks(true); 
         async function fetchSettings() {
           try {
             const response = await fetch(`${API_BASE_URL}/api/v1/account/settings/${user.id}`, { mode: 'cors' });
@@ -96,28 +96,28 @@ function App() {
     setIsAuthenticated(false);
     setShowTaskForm(false);
     setShowTasks(false);
-    setShowCalendar(false); // Reset calendar visibility on logout
+    setShowCalendar(false); 
   };
 
   const handleAddTaskClick = () => {
     setShowTaskForm(true);
     setShowSettings(false);
     setShowTasks(false);
-    setShowCalendar(false); // Hide calendar when adding a new task
+    setShowCalendar(false); 
   };
 
   const handleHomeClick = () => {
     setShowTaskForm(false);
     setShowSettings(false);
     setShowTasks(true);
-    setShowCalendar(false); // Hide calendar when home is clicked
+    setShowCalendar(false); 
   };
 
   const handleCalendarClick = () => {
     setShowTaskForm(false);
     setShowSettings(false);
     setShowTasks(false);
-    setShowCalendar(true); // Show calendar when calendar is clicked
+    setShowCalendar(true); 
   };
 
   const handleSettingsClick = () => {
@@ -150,7 +150,7 @@ function App() {
         const data = await response.json();
         console.log('Dodan zadatak:', data);
         setTasks([...tasks, data]);
-        setShowTasks(true); // Show task list after adding a new task
+        setShowTasks(true); 
       } else {
         console.error('Neuspjesno dodavanje zadatka:', response.status);
       }
@@ -175,7 +175,7 @@ function App() {
           onAddTask={handleAddTaskClick}
           onHome={handleHomeClick}
           onSettings={handleSettingsClick}
-          onCalendar={handleCalendarClick} // Add calendar click handler
+          onCalendar={handleCalendarClick} 
         />
 
         {showTaskForm && (

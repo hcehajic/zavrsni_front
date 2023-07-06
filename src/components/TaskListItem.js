@@ -16,9 +16,7 @@ function TaskListItem(props) {
   const fetchSubTasks = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/v1/task/sub/${task.id}`, { mode: 'cors' });
-      // console.log(task.id);
       const data = await response.json();
-      // console.log(data);
       setSubTasks(data);
     } catch (error) {
       console.error('Failed to fetch sub tasks:', error);
@@ -28,8 +26,6 @@ function TaskListItem(props) {
   useEffect(() => {
     fetchSubTasks();
   }, [task]);
-
-  // console.log(subTasks);
 
   const handleAddSubTask = async (e) => {
     e.preventDefault();
