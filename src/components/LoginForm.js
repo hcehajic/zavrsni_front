@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/LoginForm.css';
-import GoogleLoginButton from './GoogleLoginButton';
+//import GoogleLoginButton from './GoogleLoginButton';
 
 function LoginForm({ onLogin, setIsAuthenticated, onRegist }) {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -41,9 +41,9 @@ function LoginForm({ onLogin, setIsAuthenticated, onRegist }) {
         </label>
         <button type="submit">Prijavi se</button>
       </form>
-      <div>
+      {/*<div>
         <GoogleLoginButton onLogin={onLogin} setIsAuthenticated={setIsAuthenticated} setErrorMessage={setErrorMessage}/>
-      </div>
+      </div>*/}
       <button className="registration" onClick={onRegist}>Registruj se</button>
     </div>
   );

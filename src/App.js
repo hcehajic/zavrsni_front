@@ -127,7 +127,7 @@ function App() {
     setShowCalendar(false);
   };
 
-  const handleTaskFormSubmit = async (taskName, description, dueDate, dueTime, id, priority) => {
+  const handleTaskFormSubmit = async (taskName, description, dueDate, dueTime, id, priority, isCalendar) => {
     try {
       const task = JSON.stringify({
         taskName: taskName,
@@ -150,7 +150,15 @@ function App() {
         const data = await response.json();
         console.log('Dodan zadatak:', data);
         setTasks([...tasks, data]);
-        setShowTasks(true); 
+         
+        if (isCalendar) {
+          setShowCalendar(false);
+          setShowCalendar(true);
+          setShowTasks(false);
+        } else {
+          setShowTasks(true);
+          setShowCalendar(false);
+        }
       } else {
         console.error('Neuspjesno dodavanje zadatka:', response.status);
       }
@@ -179,7 +187,7 @@ function App() {
         />
 
         {showTaskForm && (
-          <TaskForm onAddTask={handleTaskFormSubmit} accountId={user.id} onCancel={() => setShowTaskForm(false)} />
+          <TaskForm onAddTask={handleTaskFormSubmit} accountId={user.id} onCancel={() => {setShowTaskForm(false); setShowTasks(true);}} />
         )}
 
         {isAuthenticated && !showSettings && showTasks && (
@@ -187,7 +195,7 @@ function App() {
         )}
 
         {isAuthenticated && showCalendar && (
-          <Calendar tasks={tasks} />
+          <Calendar tasks={tasks} onAddTask={handleTaskFormSubmit} accountId={user.id} />
         )}
 
         {!isAuthenticated && !showRegistration && (

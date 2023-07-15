@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import '../styles/TaskListItem.css';
 
 const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
@@ -13,7 +13,7 @@ function TaskListItem(props) {
     onDeleteTask(task.id);
   };
 
-  const fetchSubTasks = async () => {
+  const fetchSubTasks = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/v1/task/sub/${task.id}`, { mode: 'cors' });
       const data = await response.json();
@@ -21,11 +21,11 @@ function TaskListItem(props) {
     } catch (error) {
       console.error('Failed to fetch sub tasks:', error);
     }
-  };
+  }, [task.id]);
 
   useEffect(() => {
     fetchSubTasks();
-  }, [task]);
+  }, [task, fetchSubTasks]);
 
   const handleAddSubTask = async (e) => {
     e.preventDefault();

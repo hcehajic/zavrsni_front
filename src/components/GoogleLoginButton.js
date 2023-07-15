@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { GoogleLogin } from 'react-google-login';
 
 const API_BASE_URL = 'https://zavrsni-back.herokuapp.com';
@@ -55,3 +55,4 @@ const GoogleLoginButton = (onLogin, setIsAuthenticated) => {
 };
 
 export default GoogleLoginButton;
+*/

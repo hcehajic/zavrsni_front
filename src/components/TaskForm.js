@@ -14,12 +14,18 @@ function TaskForm(props) {
     if (taskName.trim() === '') {
       return;
     }
-    console.log(creationTime);
-    props.onAddTask(taskName, description, creationDate, creationTime, props.accountId, priority);
+    console.log(creationDate);
+    if (props.isCalendar) {
+      setCreationDate(props.defaultDueDate);
+    }
+    props.onAddTask(taskName, description, creationDate, creationTime, props.accountId, priority, props.isCalendar);
     setTaskName('');
     setDescription('');
     setCreationDate('');
     setCreationTime('');
+    if (props.isCalendar) {
+      props.onAddingTask();
+    }
   };
 
   const handleCancel = () => {

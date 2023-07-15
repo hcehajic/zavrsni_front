@@ -3,12 +3,21 @@ import '../styles/Calendar.css';
 
 import TaskForm from './TaskForm';
 
-function Calendar({ tasks }) {
+function Calendar(props) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showTaskFormPopup, setShowTaskFormPopup] = useState(false);
 
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const monthName = currentDate.toLocaleString('default', { month: 'long' });
+
+  const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+  const numberOfDaysInMonth = lastDayOfMonth.getDate();
+
   const openTaskForm = (date) => {
-    setSelectedDate(date);
+    const formattedDate = new Date(date).toISOString().substring(0, 10);
+    setSelectedDate(formattedDate);
     setShowTaskFormPopup(true);
   };
   
@@ -16,26 +25,22 @@ function Calendar({ tasks }) {
     setShowTaskFormPopup(false);
   };
 
+  const onAddingTask = () => {
+    setShowTaskFormPopup(false);
+  }
+
   const tasksByDate = new Map();
 
-  tasks.forEach((task) => {
+  props.tasks.forEach((task) => {
     const date = task.dueDate.substring(0, 10);
     const taskList = tasksByDate.get(date) || [];
     taskList.push(task.taskName);
     tasksByDate.set(date, taskList);
   });
 
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const monthName = currentDate.toLocaleString('default', { month: 'long' });
-
-  const numberOfDaysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-  const datesOfMonth = Array.from({ length: numberOfDaysInMonth }, (_, index) => {
-    const date = new Date(currentYear, currentMonth, index + 1);
-    return date.toISOString().substring(0, 10);
-  });
+  const datesOfMonth = Array.from( {length: numberOfDaysInMonth}, (_, index) => {
+    return new Date(currentYear, currentMonth, index + 1).toISOString().substring(0, 10);
+  } );
 
   return (
     <div className="calendar">
@@ -73,7 +78,7 @@ function Calendar({ tasks }) {
       {showTaskFormPopup && (
       <div className="popup-overlay">
         <div className="popup-content">
-          <TaskForm defaultDueDate={selectedDate} onCancel={closeTaskForm} />
+          <TaskForm defaultDueDate={selectedDate} onCancel={closeTaskForm} onAddTask={props.onAddTask} accountId={props.accountId} isCalendar={true} onAddingTask={onAddingTask} />
         </div>
       </div>
     )}
